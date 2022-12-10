@@ -1,4 +1,5 @@
 def select_sorted(sort_columns=None, limit=30, order='asc', filename='dump.csv'):
+    # функция сортирует по заданным параметрам
     if sort_columns is None:
         sort_columns = ['high']
     try:
@@ -11,23 +12,23 @@ def select_sorted(sort_columns=None, limit=30, order='asc', filename='dump.csv')
             data_name = {}
 
             r_file = r_file.readlines()
-            text = r_file[1:]
+            text = r_file[1:]  # удаляем первую строку
             for i in text:
-                date = i.split(',')[0]
+                date = i.split(',')[0]  # список по столбцам
                 open_ = i.split(',')[1]
                 high = i.split(',')[2]
                 low = i.split(',')[3]
                 close = i.split(',')[4]
                 volume = i.split(',')[5]
                 name = i.split(',')[6]
-                data_high.update({date: high})
+                data_high.update({date: high})  # словарь с ключом
                 data_open_.update({date: open_})
                 data_low.update({date: low})
                 data_close.update({date: close})
                 data_volume.update({date: volume})
                 data_name.update({date: name})
 
-            if sort_columns == ['open_']:
+            if sort_columns == ['open_']:   # сортируем
                 sorted_values = sorted(data_open_.values())
 
             if sort_columns == ['high']:
@@ -44,7 +45,7 @@ def select_sorted(sort_columns=None, limit=30, order='asc', filename='dump.csv')
 
             sorted_dict = {}
 
-            for n in sorted_values:
+            for n in sorted_values:  # новый словарь с отсортированными значениями
                 for m in data_high.keys():
                     if data_high[m] == n:
                         sorted_dict[m] = data_high[m]
@@ -52,9 +53,9 @@ def select_sorted(sort_columns=None, limit=30, order='asc', filename='dump.csv')
     except FileNotFoundError:
         print('Невозможно открыть файл')
 
-    keys = list(sorted_dict.keys())
+    keys = list(sorted_dict.keys())  # ключи
 
-    if order == 'desc':
+    if order == 'desc':   # в обратную сторону
         keys = list(reversed(keys))
 
     with open(filename, 'a') as file:
